@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+          <br><br>
+                <div class="grid-x grid-padding-x">
+                  <div class="large-8 medium-4 small-12 medium-offset-2 cell">
+              <ul class="accordion" data-accordion>
+                <li class="accordion-item" data-accordion-item>
+                    <h4> Review Application: </h4>
+                     <hr class="show-for-small-only order-table-divider">
+                      <table class="order-table-content stack">
+                        <thead>
+                          <tr>
+                            <th width="120">Apartment</th>
+                            <th width="350"> Details</th>
+                            <th width="60">Application Fees</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="order-item">
+                            <td><img class="order-product-image" src={{ application.apartment.image.url }}/></td>
+                            <td><span class="order-product-title">{{ application.apartment.apartment_name }}</span>
+                              <ul class="order-product-info">
+                                <li>Description -{{ application.apartment.description }}</li>
+                                <li>Category- {{ application.apartment.category }}</li>
+                                <li>Rent- ${{ application.apartment.rent }}</li>
+                              </ul>
+                            </td>
+                            <td><span class="order-product-total">$ {{ application.fees }}</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      </div>
+                    </div>
+                  </li> 
+                  <div class="row column text-center">
+                <div id="paypal-button-container"></div>  
+                  </div>      
+              </ul>
+            </div>
+          </div>
+          
+
+
+<script>
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+return cookieValue;
+}
+
+          var url = "{% url 'transaction' %}"
+          var thankyou_url = "{% url 'thankyou' %}"
+          var csrftoken = getCookie('csrftoken');
+          var applicationID = {{application.application_number}}
+          paypal.Buttons({
+
+                style: {
+                    color:  'blue',
+                    shape:  'pill',
+                    label:  'pay',
+                    height: 40
+                    },
+
+              createOrder: function(data, actions) {
+                  return actions.order.create({
+                      purchase_units: [{
+                          amount: {
+                              value: '5'
+                          }
+                      }]
+                  });
+              },
+  
+              onApprove: function(data, actions) {
+                  return actions.order.capture().then(function(details) {
+                      sendData();
+                      console.log(details);
+                      function sendData()
+                      {
+                        fetch(url, {
+                          method : "POST",
+                          headers: {
+                            "Content-type": "application/json",
+                            "X-CSRFToken": csrftoken,
+                          },
+                          body: JSON.stringify({
+                            applicationID: applicationID,
+                            transactionID: details.id,
+                            status: details.status,
+                          }),                 
+                        }).then((data) => {
+                              window.location.href = thankyou_url
+                        });
+                      }
+                  });
+              }
+          }).render('#paypal-button-container');
+      </script>
+{% endblock %}

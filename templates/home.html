@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="row column text-center">
+	<h2>All Apartments</h2>
+	<hr>
+  </div>
+
+  <div class="row small-up-2 large-up-4">
+	{% for apartment in apartments  %}
+
+	<div class="column">
+	  <a href={{ apartment.get_url }} ><img class="thumbnail" src={{apartment.image.url}}></a>
+	  <h5>{{ apartment.name }}</h5>
+	  <p>${{ apartment.rent }}</p>
+	  <a href="{{ apartment.get_url }}" class="button expanded">View Details</a>
+	</div>
+	{% endfor %}
+	
+  </div>
+  
+
+{% endblock %}

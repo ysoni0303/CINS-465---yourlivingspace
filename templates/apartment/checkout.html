@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+          <br><br>
+
+          <div class="multi-step-checkout-process">
+            <div class="multi-step-checkout-process-step">
+              <ul class="accordion" data-accordion>
+                <li class="accordion-item is-active" data-accordion-item>
+                  <div class="accordion-content" data-tab-content>
+                    <form class="multi-step-checkout-form" action="{% url 'checkout' apartment_id %}" method="POST">
+                      {% csrf_token %}
+                      <div class="row">
+                        <div class="small-12 medium-9 column">
+                          <div class="shipping-address multi-step-checkout-step-section">
+                            <h6 class="multi-step-checkout-step-subheader">Add Personal Details:</h6>
+                            {{ form }}
+                          <button type="submit" name="submit" class="primary button expanded">Continue</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+{% endblock %}

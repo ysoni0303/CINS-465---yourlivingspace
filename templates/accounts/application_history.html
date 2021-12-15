@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="max-age=604800" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
+
+<!-- jQuery --> 
+<script src="{% static 'js/jquery-2.0.0.min.js' %}" type="text/javascript"></script>
+
+<!-- Bootstrap4 files-->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+
+<!-- Font awesome 5 -->
+<link href="fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet">
+
+<!-- custom style -->
+<link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'css/responsive.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- custom javascript -->
+<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+
+</head>
+<body>
+
+
+
+	<br><br>
+	{% include 'includes/alerts.html' %}
+<section class="section-content padding-y">
+<div class="container">
+
+<div class="row">
+	{% include 'includes/dashboard_sidebar.html' %}
+	<main class="col-md-9">
+
+	<div class="card">
+      <div class="card-body">
+
+	<div class="multi-step-checkout-process">
+		<div class="multi-step-checkout-process-step">
+		  <ul class="accordion" data-accordion>
+			<li class="accordion-item" data-accordion-item>
+				<h4> Application History: </h4>
+				 <hr class="show-for-small-only order-table-divider">
+				  <table class="order-table-content stack">
+					<thead>
+					  <tr>
+						<th width="500">Application ID</th>
+						<th width="500">Image</th>
+						<th width="350">Details</th>
+						<th width="250"> Status </th>
+						<th width="250"> Fees</th>
+					  </tr>
+					</thead>
+					<tbody>
+						{% for application in applications %}
+					  <tr class="order-item">
+						<td><span class="order-product-total">#{{ application.application_number }}</td>
+						<td><img class="order-product-image" src={{ application.apartment.image.url }}/></td>
+						<td><span class="order-product-title">{{ application.apartment.apartment_name }}</span>
+						  <ul class="order-product-info">
+							<li>Description -{{ application.apartment.description }}</li>
+							<li>Category- {{ application.apartment.category }}</li>
+							<li>Rent- ${{ application.apartment.rent }}</li>
+						  </ul>
+						</td>
+						<td><span class="order-product-total"> {{ application.status }}</span></td>
+						<td><span class="order-product-total">$ {{ application.fees }}</span></td>
+					  </tr>
+					  {% endfor %}
+					</tbody>
+				  </table>
+				  </div>
+				</div>
+			  </li> 
+			  <div class="row column text-center">
+		    
+		  </ul>
+		</div>
+	  </div>
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	</main> <!-- col.// -->
+</div>
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+</body>
+</html>
+
+
+{% endblock %}

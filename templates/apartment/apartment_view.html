@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load social_share %}
+<br><br>
+<div class="row">
+  <div class="medium-6 columns">
+    <div class="img-big-wrap mainImage">
+      <img src="{{ apartment.image.url }}">
+    </div>
+  
+  </div>
+  <div class="medium-6 large-5 columns">
+    <h3> {{ apartment.name }}</h3>
+    <h3> ID - {{ apartment.id }}</h3>
+    <h3> ${{ apartment.rent }}</h3>
+    <div class="rating-star">
+      <span>
+        <i class="fa fa-star{% if apartment.avg < 1 %}-o{% elif apartment.avg >= 1 and apartment.avg < 1 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{% if apartment.avg < 2 %}-o{% elif apartment.avg >= 2 and apartment.avg < 2 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{% if apartment.avg < 3 %}-o{% elif apartment.avg >= 3 and apartment.avg < 3 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{% if apartment.avg < 4 %}-o{% elif apartment.avg >= 4 and apartment.avg < 4 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{% if apartment.avg < 5 %}-o{% elif apartment.avg >= 5 and apartment.avg < 5 %}-o {% endif %}" aria-hidden="true"></i>
+        <span> {{apartment.totalReviewCount}} reviews</span>
+        </span>
+    <div>
+    <p>{{ apartment.description }}</p>
+
+    {% if user.id is not None%}
+        <a href="{% url 'checkout' apartment.id %}" class="button large expanded">Apply Now</a>
+    {% else %}
+      <a href="{% url 'login' %}" class="button large expanded">Please, login to apply</a>
+    {% endif %}
+       
+      
+      <div class="medium-6 large-5 rows">
+        {% post_to_twitter "Check this out!" object_or_url "Post to Twitter" %}
+        {% post_to_facebook "Check this out" object_or_url "Post to Facebook" %}
+        {% post_to_whatsapp "Check this out" object_or_url "Post to Whatsapp" %}
+      </div>
+      </div>
+    </div>
+</div>
+
+<div class="column row">
+  <hr>
+  <div class="tabs-content" data-tabs-content="example-tabs">
+    <div class="tabs-panel is-active" id="panel1">
+      <h4>Reviews</h4>
+
+      {% for review in reviews %}
+      <div class="media-object stack-for-small">
+        <div class="media-object-section">
+          {{profile_form.profile_picture}}
+        </div>
+        <div class="media-object-section">
+          <h5> User - {{ review.user.first_name }} {{" "}} {{ review.user.last_name }} </h5> 
+            <span>
+              <i class="fa fa-star{% if review.rating < 1 %}-o{% elif review.rating >= 1 and review.rating < 1 %}-o {% endif %}" aria-hidden="true"></i>
+              <i class="fa fa-star{% if review.rating < 2 %}-o{% elif review.rating >= 2 and review.rating < 2 %}-o {% endif %}" aria-hidden="true"></i>
+              <i class="fa fa-star{% if review.rating < 3 %}-o{% elif review.rating >= 3 and review.rating < 3 %}-o {% endif %}" aria-hidden="true"></i>
+              <i class="fa fa-star{% if review.rating < 4 %}-o{% elif review.rating >= 4 and review.rating < 4 %}-o {% endif %}" aria-hidden="true"></i>
+              <i class="fa fa-star{% if review.rating < 5 %}-o{% elif review.rating >= 5 and review.rating < 5 %}-o {% endif %}" aria-hidden="true"></i>
+              </span>
+          <br><br>
+          <h5> Subject - {{ review.subject }} </h5>
+          <p> <b> Review - {{ review.review }} </b> </p>
+          <hr>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+
+<br><br><br>
+
+<form action="{% url 'submit_review' apartment.id %}" method="POST">
+  {% csrf_token %}
+  <h4>Write Your Review</h4>
+    Review Title:
+    <input type="text" class="form-control" name="subject" required>
+    <br>
+    Review:
+    <textarea name="review" rows="5" class="form-control"></textarea>
+    <br>
+    <label><h5>Rate this product</h5></label>
+    <br>
+    <div class="rate">
+      <input type="radio" name="rating" id="rating5" value="5" required/><label for="rating5" title="5"></label>
+      <input type="radio" name="rating" id="rating4" value="4" required/><label for="rating4" title="4"></label>
+      <input type="radio" name="rating" id="rating3" value="3" required/><label for="rating3" title="3"></label>
+      <input type="radio" name="rating" id="rating2" value="2" required/><label for="rating2" title="2"></label>
+      <input type="radio" name="rating" id="rating1" value="1" required/><label for="rating1" title="1"></label>
+    </div>
+    <br>
+    {% if user.is_authenticated %}
+    <input type="submit" value="Submit" class="btn btn-primary">
+    {% else %}
+    <p> Please login,to post a review.<span><a href= "{% url 'login' %}"> Login Now.</a></span></p>
+    {% endif %}
+    <br>
+  </div>
+{% include 'includes/alerts.html' %}
+</form>
+  {% endblock %}
+  
+  

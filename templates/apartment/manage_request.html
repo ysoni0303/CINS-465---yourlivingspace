@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+
+      <br><br>
+      <div class="grid-x grid-padding-x">
+        <div class="large-8 medium-4 small-12 medium-offset-2 cell">
+      <ul class="accordion" data-accordion>
+        <li class="accordion-item" data-accordion-item>
+            <h4> Application Requests: </h4>
+             <hr class="show-for-small-only order-table-divider">
+              <table class="order-table-content stack">
+                <thead>
+                  <tr>
+                    <th width="350">Application ID</th>
+                    <th width="350">User Details</th>
+                    <th width="350">Image</th>
+                    <th width="350">Apartment</th>
+                    <th width="350"> Status </th>
+                    <th width="350"> Fees Paid</th>
+                    <th width="350"> Update Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                  <tr class="order-item">
+                    <td><span class="order-product-title">#{{ application.application_number }}</span>
+                        <td>
+                            <ul class="order-product-info">
+    
+                              <li>Name- {{ application.user.first_name }}</li>
+                              <li>Email- ${{ application.user.email }}</li>
+                            </ul>
+                          </td>
+                    <td><img class="order-product-image" src={{ application.apartment.image.url }}/></td>
+                    <td><span class="order-product-title">{{ application.apartment.apartment_name }}</span>
+                      <ul class="order-product-info">
+                        <li>Category- {{ application.apartment.category }}</li>
+                        <li>Rent- ${{ application.apartment.rent }}</li>
+                      </ul>
+                    </td>
+                    <td><span class="order-product-total"> {{ application.status }}</span></td>
+                    <td><span class="order-product-total">$ {{ application.fees }}</span></td>
+                    <td><a href = "{% url 'update_status' application.id %}"> Update </a></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </li> 
+          <div class="row column text-center">
+        
+      </ul>
+    </div>
+</div>
+
+
+
+  {% endblock %}

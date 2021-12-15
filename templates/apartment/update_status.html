@@ -1,0 +1,29 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="grid-x grid-padding-x">
+    <div class="large-4 medium-4 small-12 large-offset-4 medium-offset-4 cell">
+              <div class="card-header">
+                  <h5 class="card-title">Status Update</h5>
+              </div>
+              <div class="card-body">
+                <form action="{% url 'update_status' id %}" method="POST">
+                    {% csrf_token %}
+                    {{form }}
+                    
+                    <input type="submit" name="Submit">
+                </form>
+              </div>
+            </div>
+        
+    </div>
+</div>
+
+{% endblock %}

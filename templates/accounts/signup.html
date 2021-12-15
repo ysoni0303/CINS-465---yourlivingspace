@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+
+  <div class="grid-x grid-padding-x">
+    <div class="large-4 medium-4 small-12 large-offset-4 medium-offset-4 cell">
+    {% include 'includes/alerts.html' %}
+      <h3 class="text-center">Signup</h3>
+      <form action="{% url 'signup' %}" method="post">
+          {% csrf_token %}
+          {{ form }}
+          {{ form.email.errors }}
+          {{ form.non_field.errors }}
+          <input type="submit" class="button expanded" value="Register" />
+      </form>
+      <p class="text-center mt-4">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+
+    </div>  
+  </div>
+  
+
+  
+
+
+
+
+
+
+
+
+{% endblock %}
