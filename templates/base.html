@@ -49,6 +49,7 @@
       {% if user.is_admin == True %}
       <li><a href="{% url 'apartment_add' %}">Add Apartments</a></li>
       <li><a href="{% url 'manage_request' %}">Manage Requests </a></li>
+      <li><a href="{% url 'enter_room' %}">Enter Room </a></li>
       {% endif %}
 
       {% if user.id is not None%}

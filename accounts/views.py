@@ -1,18 +1,17 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import SignupForm, ProfileForm
-from .models import Account
-from checkout.models import Application
-from django.contrib import messages, auth
-from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import login_required
-
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.contrib.auth import authenticate
+from django.contrib import messages, auth
 from django.core.mail import send_mail
 
+from .forms import SignupForm, ProfileForm
+from checkout.models import Application
+from .models import Account
 
 def signup(request):
     if request.method == 'POST':

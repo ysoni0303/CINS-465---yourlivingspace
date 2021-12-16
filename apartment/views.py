@@ -1,22 +1,32 @@
 from django.http.response import HttpResponse
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.contrib import messages
+from django.db.models import Q
+from slugify import slugify 
+
+from checkout.models import Application
 from apartment.models import Apartment
 from .models import Apartment, Review
 from category.models import Category
-from checkout.models import Application
 from checkout.forms import ApplicationForm
 from .forms import ReviewForm, ApartmentForm, ApartmentFormForSaving
-from django.contrib import messages
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.http import HttpResponse
-from django.db.models import Q
-from django.contrib.auth.decorators import login_required
-from slugify import slugify 
 
 def apartment(request):
-    apartments = Apartment.objects.all().filter(is_available=True).order_by('-id')
+    p = request.GET.get('page')
+    categories = Category.objects.filter()
+    total_apartments = Apartment.objects.filter(is_available=True).order_by('-id')
+    paginator = Paginator(total_apartments, 4)
+
+    apartments = paginator.get_page(p)
+    total_apartments = total_apartments.count()
+
     context = {
         'apartments': apartments,
+        'count': total_apartments,
+        'categories' : categories
     }
     return render(request, 'apartment/apartment.html', context)
 
@@ -69,6 +79,7 @@ def update_status(request, id):
 
 def apartmentListing(request, slug=None):
     p = request.GET.get('page')
+    all_categories = Category.objects.filter()
     categories = get_object_or_404(Category, slug=slug)
     total_apartments = Apartment.objects.filter(category=categories, is_available=True).order_by('-id')
     paginator = Paginator(total_apartments, 4)
@@ -79,6 +90,7 @@ def apartmentListing(request, slug=None):
     context = {
         'apartments': apartments,
         'count': total_apartments,
+        'categories': all_categories
     }
 
     return render(request, 'apartment/apartment.html', context)

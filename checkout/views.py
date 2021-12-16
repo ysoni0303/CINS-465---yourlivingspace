@@ -1,14 +1,15 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .forms import ApplicationForm
-from .models import Transaction, Application
-from apartment.models import Apartment
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
+from django.shortcuts import render, redirect
+from django.core.mail import EmailMessage
 from django.core.mail import send_mail
+from django.http import HttpResponse
 import datetime
 import json
+
+from .models import Transaction, Application
+from apartment.models import Apartment
+from .forms import ApplicationForm
 
 @login_required(login_url = 'login')
 def thankyou(request):

@@ -10,7 +10,7 @@
     <hr>
     </div>
   <div class="row column text-center">
-      {% for category in list %}
+      {% for category in categories %}
       <a href={{ category.get_url }}  class="button hollow filter-simple-button is-active" data-filter="studio">{{ category.name }}</a>
       {% endfor %}
   </div>
